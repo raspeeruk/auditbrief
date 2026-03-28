@@ -1,0 +1,65 @@
+Full Name,Account Name,Job Title,Level,Location,Start Date,Department
+James Whitfield,"UBS - London",Head of Private Banking UK,Managing Director,London,2015-03-12,Private Banking
+Catherine Beaumont,"UBS - London",Senior Relationship Manager,Senior Vice President,London,2017-06-01,Private Banking
+Marcus Thornton,"UBS - London",Relationship Manager,Vice President,London,2019-11-15,Private Banking
+Sophia Lin,"UBS - London",Investment Counsellor,Vice President,London,2020-02-20,Investment Advisory
+Daniel Okafor,"UBS - London",Portfolio Manager,Associate Director,London,2021-08-10,Investment Advisory
+Rachel Stein,"UBS - Zurich",Head of Wealth Management EMEA,Managing Director,Zurich,2012-01-08,Wealth Management
+Thomas Keller,"UBS - Zurich",Senior Client Advisor,Senior Vice President,Zurich,2016-04-22,Private Banking
+Lena Vogt,"UBS - Zurich",Discretionary Portfolio Manager,Vice President,Zurich,2018-09-03,Investment Advisory
+Andreas Brunner,"UBS - Zurich",Relationship Manager,Vice President,Zurich,2020-05-14,Private Banking
+Elena Marinova,"UBS - Geneva",Senior Private Banker,Senior Vice President,Geneva,2014-07-01,Private Banking
+Philippe Dupont,"UBS - Geneva",Investment Advisor,Vice President,Geneva,2019-03-18,Investment Advisory
+Clara Fontaine,"UBS - Geneva",Client Advisor,Associate,Geneva,2022-01-10,Private Banking
+Henrik Johansson,"Julius Baer - London",Head of UK Private Banking,Managing Director,London,2013-09-01,Private Banking
+Amara Osei,"Julius Baer - London",Senior Relationship Manager,Senior Vice President,London,2016-11-22,Private Banking
+William Cavendish,"Julius Baer - London",Relationship Manager,Vice President,London,2018-04-15,Private Banking
+Priya Sharma,"Julius Baer - London",Investment Advisor,Vice President,London,2019-08-01,Investment Advisory
+Oliver Blackwood,"Julius Baer - London",Client Advisor,Associate Director,London,2021-02-14,Private Banking
+Natasha Petrova,"Julius Baer - Zurich",Global Head Wealth Management,Executive Director,Zurich,2011-05-01,Wealth Management
+Maximilian Graf,"Julius Baer - Zurich",Senior Portfolio Manager,Senior Vice President,Zurich,2015-10-12,Investment Advisory
+Anna Huber,"Julius Baer - Zurich",Relationship Manager,Vice President,Zurich,2017-07-03,Private Banking
+David Meier,"Julius Baer - Zurich",Investment Counsellor,Vice President,Zurich,2020-01-20,Investment Advisory
+Chiara Rossi,"Julius Baer - Geneva",Senior Client Advisor,Senior Vice President,Geneva,2014-03-15,Private Banking
+Jean-Marc Lefevre,"Julius Baer - Geneva",Relationship Manager,Vice President,Geneva,2018-11-08,Private Banking
+Sofia Andersson,"Julius Baer - Singapore",Head of Asia Private Banking,Managing Director,Singapore,2016-02-01,Private Banking
+Kenji Tanaka,"Julius Baer - Singapore",Senior Investment Advisor,Senior Vice President,Singapore,2018-05-22,Investment Advisory
+Wei Chen,"Julius Baer - Singapore",Relationship Manager,Vice President,Singapore,2020-09-14,Private Banking
+Robert Ashworth,"Barclays - London",Head of Private Bank,Managing Director,London,2014-06-01,Private Banking
+Victoria Palmer,"Barclays - London",Senior Private Banker,Senior Vice President,London,2016-03-18,Private Banking
+George Hartley,"Barclays - London",Relationship Manager,Vice President,London,2018-10-22,Private Banking
+Aisha Khan,"Barclays - London",Investment Manager,Vice President,London,2019-07-15,Investment Advisory
+Sebastian Moore,"Barclays - London",Client Advisor,Associate Director,London,2021-04-01,Private Banking
+Fiona Campbell,"Barclays - London",Private Banker,Associate,London,2022-06-12,Private Banking
+Richard Townsend,"Barclays - Geneva",Senior Relationship Manager,Senior Vice President,Geneva,2015-09-01,Private Banking
+Marie-Claire Bonnet,"Barclays - Geneva",Portfolio Manager,Vice President,Geneva,2019-02-14,Investment Advisory
+Lucas van der Berg,"Barclays - Geneva",Client Advisor,Associate,Geneva,2022-11-01,Private Banking
+Friedrich Engel,"Deutsche Bank - London",Head of Wealth Management UK,Managing Director,London,2013-04-15,Wealth Management
+Charlotte Waverly,"Deutsche Bank - London",Senior Relationship Manager,Senior Vice President,London,2016-08-01,Private Banking
+Hassan Al-Rashid,"Deutsche Bank - London",Investment Advisor,Vice President,London,2019-01-20,Investment Advisory
+Emily Carpenter,"Deutsche Bank - London",Relationship Manager,Vice President,London,2020-06-15,Private Banking
+Nikolai Volkov,"Deutsche Bank - Zurich",Senior Private Banker,Senior Vice President,Zurich,2015-11-01,Private Banking
+Isabelle Morel,"Deutsche Bank - Zurich",Portfolio Manager,Vice President,Zurich,2018-03-22,Investment Advisory
+Stefan Richter,"Deutsche Bank - Frankfurt",Head of UHNW Germany,Executive Director,Frankfurt,2012-07-01,Private Banking
+Claudia Werner,"Deutsche Bank - Frankfurt",Senior Relationship Manager,Senior Vice President,Frankfurt,2016-01-15,Private Banking
+Michael Bauer,"Deutsche Bank - Frankfurt",Relationship Manager,Vice President,Frankfurt,2019-09-01,Private Banking
+Eva Schmidt,"Deutsche Bank - Frankfurt",Investment Counsellor,Associate Director,Frankfurt,2021-03-10,Investment Advisory
+Laura Hoffmann,"Deutsche Bank - Frankfurt",Client Advisor,Associate,Frankfurt,2023-01-08,Private Banking
+Alexander Montague,"Pictet - Geneva",Partner - Head of Wealth,Managing Director,Geneva,2010-04-01,Wealth Management
+Marguerite Dubois,"Pictet - Geneva",Senior Client Advisor,Senior Vice President,Geneva,2014-11-15,Private Banking
+Olivier Favre,"Pictet - Geneva",Investment Counsellor,Vice President,Geneva,2017-06-22,Investment Advisory
+Valentina Bianchi,"Pictet - Geneva",Relationship Manager,Vice President,Geneva,2019-08-01,Private Banking
+Hugo Lambert,"Pictet - Geneva",Discretionary Portfolio Manager,Associate Director,Geneva,2021-05-14,Investment Advisory
+Benedict Harrington,"Pictet - London",Head of UK Wealth Management,Managing Director,London,2015-02-01,Wealth Management
+Sarah Whitmore,"Pictet - London",Senior Private Banker,Senior Vice President,London,2017-09-12,Private Banking
+Rahul Mehta,"Pictet - London",Investment Advisor,Vice President,London,2020-04-01,Investment Advisory
+Camille Renard,"Pictet - Zurich",Senior Relationship Manager,Senior Vice President,Zurich,2016-03-01,Private Banking
+Felix Zimmermann,"Pictet - Zurich",Portfolio Manager,Vice President,Zurich,2019-10-22,Investment Advisory
+Edward Pemberton,"Lombard Odier - Geneva",Head of Private Clients,Managing Director,Geneva,2011-08-01,Private Banking
+Sylvie Mercier,"Lombard Odier - Geneva",Senior Client Advisor,Senior Vice President,Geneva,2015-05-15,Private Banking
+Antoine Girard,"Lombard Odier - Geneva",Investment Counsellor,Vice President,Geneva,2018-02-20,Investment Advisory
+Nadia Kozlov,"Lombard Odier - Geneva",Relationship Manager,Vice President,Geneva,2020-07-01,Private Banking
+Christopher Wainwright,"Lombard Odier - London",Senior Private Banker,Senior Vice President,London,2016-10-01,Private Banking
+Yuki Nakamura,"Lombard Odier - London",Investment Advisor,Vice President,London,2019-12-15,Investment Advisory
+Tobias Lehmann,"Lombard Odier - Zurich",Relationship Manager,Vice President,Zurich,2018-08-22,Private Banking
+Marianne Steiner,"Lombard Odier - Zurich",Discretionary Portfolio Manager,Associate Director,Zurich,2021-01-10,Investment Advisory
