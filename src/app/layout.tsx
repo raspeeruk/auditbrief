@@ -33,6 +33,8 @@ export const metadata: Metadata = {
   },
 }
 
+const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID
+
 export default function RootLayout({
   children,
 }: {
@@ -40,6 +42,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${bebasNeue.variable} ${courierPrime.variable} ${archivoNarrow.variable}`}>
+      <head>
+        {GA4_ID && (
+          <>
+            <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`} />
+            <script dangerouslySetInnerHTML={{ __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${GA4_ID}');` }} />
+          </>
+        )}
+      </head>
       <body className="min-h-screen bg-[#F2F2EF] text-[#111110] antialiased">
         {children}
       </body>
