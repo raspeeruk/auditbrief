@@ -2,244 +2,237 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'The Complete SEO Audit Checklist for 2026 (87 Points) | AuditBrief',
-  description: 'A comprehensive 87-point SEO audit checklist covering technical SEO, on-page, content, backlinks, and structured data. Use it manually or automate it with AuditBrief.',
-  openGraph: {
-    title: 'The Complete SEO Audit Checklist for 2026 (87 Points)',
-    description: 'A comprehensive 87-point SEO audit checklist covering technical SEO, on-page, content, backlinks, and structured data.',
-    type: 'article',
-  },
+  title: 'SEO Audit Checklist: 47 Points to Check in 2025 | AuditBrief',
+  description: 'The complete SEO audit checklist — 47 points across technical SEO, on-page, content quality, backlinks, and local. Use it before every audit.',
 }
 
-const CheckItem = ({ children }: { children: React.ReactNode }) => (
-  <li className="flex items-start gap-3 py-2 border-b border-[#C8C8C4] last:border-0">
-    <span className="mt-1 flex-shrink-0 w-4 h-4 border-2 border-[#111110] bg-[#F2F2EF]" />
-    <span className="font-[family-name:var(--font-body)] text-sm text-[#111110] leading-relaxed">{children}</span>
-  </li>
-)
+const categories = [
+  {
+    name: 'Technical SEO',
+    count: 10,
+    items: [
+      'robots.txt is present, accessible, and not blocking important resources',
+      'XML sitemap exists, is submitted to GSC, and contains only indexable URLs',
+      'All pages served over HTTPS with valid SSL certificate',
+      'Site passes Google\'s mobile-friendliness test',
+      'Core Web Vitals pass: LCP < 2.5s, INP < 200ms, CLS < 0.1',
+      'Crawl budget is not wasted on low-value pages (pagination, filters, tags)',
+      'No redirect chains longer than 2 hops; no redirect loops',
+      'Canonical tags are present and correct on all key pages',
+      'Hreflang implemented correctly (if multilingual)',
+      'Structured data validates without errors in Rich Results Test',
+    ],
+  },
+  {
+    name: 'On-Page SEO',
+    count: 12,
+    items: [
+      'Every page has a unique title tag between 50–60 characters',
+      'Every page has a unique meta description between 120–155 characters',
+      'Each page has exactly one H1 tag containing the primary keyword',
+      'Header hierarchy is logical: H1 → H2 → H3, no skipped levels',
+      'Primary keyword appears in the first 100 words of body content',
+      'Content length is comparable to or exceeds top-ranking competitors',
+      'Internal links use descriptive anchor text (not "click here")',
+      'All images have descriptive alt text with relevant keywords where natural',
+      'URLs are short, lowercase, hyphen-separated, and keyword-rich',
+      'Page speed scores 80+ on PageSpeed Insights (desktop and mobile)',
+      'Schema markup matches the content type (Article, Product, FAQ, etc.)',
+      'No duplicate content detected across pages or domains',
+    ],
+  },
+  {
+    name: 'Content Quality',
+    count: 8,
+    items: [
+      'No thin content pages (under 300 words) are indexed by Google',
+      'Keyword cannibalization check: no two pages targeting the same primary term',
+      'Key content pages have been updated within the last 12 months',
+      'Topic coverage is comprehensive — no obvious subtopics left unaddressed',
+      'E-E-A-T signals present: author bio, credentials, about page, external mentions',
+      'Author information visible on blog posts and opinion content',
+      'Content gaps identified vs top 3 ranking competitors for target terms',
+      'No factually outdated information on evergreen pages (stats, laws, prices)',
+    ],
+  },
+  {
+    name: 'Backlinks',
+    count: 8,
+    items: [
+      'Domain rating or authority is competitive for the target niche',
+      'Spam score is below 10% (Moz) or no manual action warnings in GSC',
+      'Link velocity is natural — no sudden spikes suggesting bought links',
+      'Anchor text distribution is natural — no over-optimisation on exact-match',
+      'Toxic or low-quality links identified and disavowed if necessary',
+      'No significant broken backlinks pointing to 404 pages (redirect or fix)',
+      'Unlinked brand mentions identified as link-building opportunities',
+      'Competitor backlink gap analysis completed — new targets identified',
+    ],
+  },
+  {
+    name: 'Local & Technical Extras',
+    count: 9,
+    items: [
+      'Google Business Profile is claimed, verified, and fully optimised (if local)',
+      'NAP (Name, Address, Phone) is consistent across all citations and directories',
+      'Local citations match GBP data exactly — no abbreviation mismatches',
+      'Core Web Vitals pass on mobile specifically (Google uses mobile-first indexing)',
+      'Page experience signals pass: no intrusive interstitials, good CLS on mobile',
+      'HTTPS security headers present: HSTS, X-Frame-Options, Content-Security-Policy',
+      'XML sitemap was regenerated and resubmitted after any major content changes',
+      'Orphan pages identified — every page has at least one internal link pointing to it',
+      'GSC shows zero crawl errors on important page types',
+    ],
+  },
+]
 
-const SectionLabel = ({ children }: { children: React.ReactNode }) => (
-  <p className="label mb-2">{children}</p>
-)
+const faqs = [
+  {
+    q: 'How do I use this SEO audit checklist?',
+    a: 'Work through each category in order — technical first, then on-page, then content, backlinks, and local. Fix critical technical issues before spending time on content improvements. Use a spreadsheet to track status (pass/fail/in progress) for each item.',
+  },
+  {
+    q: 'Do I need to check all 47 points for every audit?',
+    a: 'Not always. For a quick monthly health check, focus on the Technical SEO and On-Page sections (22 points). Save the full 47-point audit for quarterly reviews or before a major site change like a redesign or domain migration.',
+  },
+  {
+    q: 'Who should handle each section of the checklist?',
+    a: 'Technical SEO items typically require a developer or someone comfortable with HTML and GSC. On-page and content items can be handled by an SEO or content specialist. Backlink analysis is usually the SEO lead. Local items can be delegated to a marketing assistant with clear instructions.',
+  },
+  {
+    q: 'What is the fastest way to complete this checklist?',
+    a: 'Run Screaming Frog first — it checks most technical and on-page items automatically. Then pull the GSC Coverage and Core Web Vitals reports. For backlinks, an Ahrefs or Semrush export covers that section in minutes. The whole process takes 2–3 hours with the right tools, or under 2 minutes with AuditBrief.',
+  },
+]
 
-export default function SEOAuditChecklist() {
+export default function SEOAuditChecklistPage() {
   return (
     <div className="min-h-screen bg-[#F2F2EF]">
+      {/* Nav */}
       <nav className="max-w-[1200px] mx-auto px-6 py-6 flex items-center justify-between border-b-2 border-[#111110]">
         <Link href="/" className="font-[family-name:var(--font-heading)] text-3xl tracking-wider text-[#111110] uppercase">
           AuditBrief
         </Link>
-        <div className="flex items-center gap-4">
-          <Link href="/guides/how-to-do-seo-audit" className="font-[family-name:var(--font-ui)] text-sm font-semibold uppercase tracking-widest text-[#5A5A56] hover:text-[#111110] transition-colors hidden md:block">
-            How-To Guide
-          </Link>
-          <Link href="https://auditpdf.com" className="btn-accent inline-block">
-            Run Free Audit
-          </Link>
-        </div>
+        <Link href="/auth/signup" className="bg-[#B8FF00] text-[#111110] font-bold px-5 py-2.5 border-2 border-[#111110] uppercase tracking-wider text-sm font-[family-name:var(--font-ui)] inline-block hover:bg-[#A0E000] transition-colors">
+          Start Free
+        </Link>
       </nav>
 
-      <main className="max-w-[860px] mx-auto px-6 pt-14 pb-24">
-        <SectionLabel>SEO Audit Guide</SectionLabel>
-        <h1 className="font-[family-name:var(--font-heading)] text-[#111110] leading-none uppercase mb-6" style={{ fontSize: '68px' }}>
-          The Complete SEO Audit Checklist for 2026 (87 Points)
-        </h1>
-        <p className="font-[family-name:var(--font-body)] text-lg text-[#5A5A56] leading-relaxed mb-10 max-w-[640px]">
-          Every point that matters — from Core Web Vitals to backlink health. Work through this manually or let AuditBrief handle it in 90 seconds.
-        </p>
+      {/* Hero */}
+      <section className="bg-[#111110] border-b-2 border-[#111110]">
+        <div className="max-w-[768px] mx-auto px-6 py-16">
+          <p className="font-[family-name:var(--font-ui)] text-xs text-[#B8FF00] uppercase tracking-widest mb-4">SEO Audit Checklist</p>
+          <h1 className="font-[family-name:var(--font-heading)] text-[#B8FF00] uppercase leading-none mb-6" style={{ fontSize: '52px' }}>
+            SEO Audit Checklist: 47 Points to Check in 2025
+          </h1>
+          <p className="font-[family-name:var(--font-body)] text-[#E8E8E4] text-lg leading-relaxed">
+            The complete SEO audit checklist, organised by category. Work through each section in order — technical issues first, content and backlinks after.
+          </p>
+        </div>
+      </section>
 
-        <div className="card-brutal p-6 mb-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div>
-            <p className="label mb-1">Skip the manual work</p>
-            <p className="font-[family-name:var(--font-body)] text-sm text-[#111110]">AuditBrief checks all 87 points automatically and outputs a branded PDF report.</p>
+      {/* Checklist sections */}
+      {categories.map((cat, catIndex) => (
+        <section key={cat.name} className="max-w-[768px] mx-auto px-6 py-10">
+          <div className="flex items-baseline gap-4 mb-4 border-b-2 border-[#111110] pb-3">
+            <h2 className="font-[family-name:var(--font-heading)] text-[#111110] uppercase text-[28px]">
+              {cat.name}
+            </h2>
+            <span className="font-[family-name:var(--font-ui)] text-xs font-semibold uppercase tracking-wider text-[#5A5A56]">
+              {cat.count} items
+            </span>
           </div>
-          <Link href="https://auditpdf.com" className="btn-accent inline-block flex-shrink-0">
-            Audit a site free →
+          <div className="border-2 border-[#111110] divide-y-2 divide-[#111110]">
+            {cat.items.map((item, i) => (
+              <div key={i} className="px-4 py-3 flex items-start gap-3">
+                <span className="font-[family-name:var(--font-body)] text-[#B8FF00] text-lg leading-none mt-0.5 [text-shadow:0.5px_0.5px_0_#111110] shrink-0">☐</span>
+                <span className="font-[family-name:var(--font-body)] text-sm text-[#111110] leading-relaxed">{item}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Insert CTA box after on-page section (index 1) */}
+          {catIndex === 1 && (
+            <div className="border-2 border-[#111110] bg-[#111110] p-6 mt-8">
+              <p className="font-[family-name:var(--font-heading)] text-[#B8FF00] uppercase text-[22px] leading-tight mb-2">
+                Automate the first 22 checks.
+              </p>
+              <p className="font-[family-name:var(--font-body)] text-[#E8E8E4] text-sm leading-relaxed mb-4">
+                AuditBrief checks technical SEO and on-page items automatically — then generates a branded PDF report in under 2 minutes.
+              </p>
+              <Link href="/auth/signup" className="bg-[#B8FF00] text-[#111110] font-bold px-6 py-3 inline-block hover:bg-[#A0E000] transition-colors font-[family-name:var(--font-ui)] uppercase tracking-wider text-sm border-2 border-[#B8FF00]">
+                Run Your Free SEO Audit →
+              </Link>
+            </div>
+          )}
+        </section>
+      ))}
+
+      {/* How to use */}
+      <section className="max-w-[768px] mx-auto px-6 pb-12">
+        <h2 className="font-[family-name:var(--font-heading)] text-[#111110] uppercase text-[32px] mb-6 border-b-2 border-[#111110] pb-4">
+          How to use this checklist
+        </h2>
+        <div className="border-2 border-[#111110] divide-y-2 divide-[#111110]">
+          {[
+            { step: '01', title: 'Technical first', desc: 'Fix any crawl, indexing, or speed issues before anything else. None of the other work matters if Googlebot cannot access your pages.' },
+            { step: '02', title: 'On-page before content', desc: 'Make sure the metadata and structure signals are correct. This is lower effort than rewriting content and has immediate impact.' },
+            { step: '03', title: 'Content gaps and quality', desc: 'Once technical and on-page are solid, assess whether the content itself is worth ranking — length, depth, E-E-A-T, freshness.' },
+            { step: '04', title: 'Backlinks last', desc: 'Backlink work is a longer game. Fix on-site issues first so that any links you build point to pages that are fully optimised.' },
+          ].map(item => (
+            <div key={item.step} className="p-6 flex gap-4">
+              <span className="font-[family-name:var(--font-heading)] text-[36px] text-[#B8FF00] leading-none [text-shadow:1px_1px_0_#111110] shrink-0">{item.step}</span>
+              <div>
+                <h3 className="font-[family-name:var(--font-ui)] text-sm font-semibold uppercase tracking-wider text-[#111110] mb-1">{item.title}</h3>
+                <p className="font-[family-name:var(--font-body)] text-sm text-[#5A5A56] leading-relaxed">{item.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="max-w-[768px] mx-auto px-6 pb-12">
+        <h2 className="font-[family-name:var(--font-heading)] text-[#111110] uppercase text-[32px] mb-6 border-b-2 border-[#111110] pb-4">
+          Frequently asked questions
+        </h2>
+        <div className="space-y-4">
+          {faqs.map(faq => (
+            <div key={faq.q} className="border-2 border-[#111110] p-6">
+              <h3 className="font-[family-name:var(--font-ui)] text-sm font-semibold uppercase tracking-wider text-[#111110] mb-3">{faq.q}</h3>
+              <p className="font-[family-name:var(--font-body)] text-sm text-[#5A5A56] leading-relaxed">{faq.a}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="max-w-[768px] mx-auto px-6 pb-20">
+        <div className="bg-[#B8FF00] border-2 border-[#111110] p-10 text-center">
+          <h2 className="font-[family-name:var(--font-heading)] text-[#111110] uppercase text-[36px] leading-tight mb-3">
+            Check all 47 points automatically.
+          </h2>
+          <p className="font-[family-name:var(--font-body)] text-[#111110] text-sm leading-relaxed mb-6 max-w-[400px] mx-auto">
+            AuditBrief runs the technical and on-page checks automatically and produces a client-ready PDF. First audit is free.
+          </p>
+          <Link href="/auth/signup" className="bg-[#111110] text-[#B8FF00] font-bold px-8 py-4 inline-block hover:bg-[#333] transition-colors font-[family-name:var(--font-ui)] uppercase tracking-wider text-sm">
+            Run Your Free SEO Audit →
           </Link>
         </div>
+      </section>
 
-        {/* Section 1 */}
-        <div className="mb-12">
-          <h2 className="font-[family-name:var(--font-heading)] text-[#111110] uppercase mb-1" style={{ fontSize: '38px' }}>
-            1. Technical SEO
-          </h2>
-          <p className="font-[family-name:var(--font-body)] text-sm text-[#5A5A56] mb-6">
-            If search engines can&apos;t crawl and index your site efficiently, nothing else matters. Start here every time.
-          </p>
-
-          <h3 className="font-[family-name:var(--font-ui)] font-semibold uppercase tracking-widest text-sm text-[#111110] mb-3 mt-6">Core Web Vitals</h3>
-          <ul className="card-brutal-sm p-4 mb-6">
-            <CheckItem>LCP (Largest Contentful Paint) under 2.5s on mobile</CheckItem>
-            <CheckItem>INP (Interaction to Next Paint) under 200ms</CheckItem>
-            <CheckItem>CLS (Cumulative Layout Shift) below 0.1</CheckItem>
-            <CheckItem>TTFB (Time to First Byte) under 800ms</CheckItem>
-            <CheckItem>FCP (First Contentful Paint) under 1.8s</CheckItem>
-          </ul>
-
-          <h3 className="font-[family-name:var(--font-ui)] font-semibold uppercase tracking-widest text-sm text-[#111110] mb-3 mt-6">Crawlability &amp; Indexation</h3>
-          <ul className="card-brutal-sm p-4 mb-6">
-            <CheckItem>robots.txt exists and is not blocking important pages</CheckItem>
-            <CheckItem>XML sitemap present, valid, and submitted to Google Search Console</CheckItem>
-            <CheckItem>No important pages accidentally noindexed</CheckItem>
-            <CheckItem>Canonical tags consistent — no self-referencing canonicals pointing elsewhere</CheckItem>
-            <CheckItem>No orphan pages (pages with zero internal links)</CheckItem>
-            <CheckItem>Pagination handled correctly (rel=next/prev or consolidated)</CheckItem>
-            <CheckItem>Crawl budget not wasted on thin/duplicate pages</CheckItem>
-            <CheckItem>Google Search Console coverage report checked for errors</CheckItem>
-          </ul>
-
-          <h3 className="font-[family-name:var(--font-ui)] font-semibold uppercase tracking-widest text-sm text-[#111110] mb-3 mt-6">Site Architecture</h3>
-          <ul className="card-brutal-sm p-4 mb-6">
-            <CheckItem>URL structure is clean, keyword-relevant, and consistent</CheckItem>
-            <CheckItem>No important page more than 3 clicks from homepage</CheckItem>
-            <CheckItem>Internal linking supports topical clusters</CheckItem>
-            <CheckItem>HTTPS enforced sitewide with valid SSL certificate</CheckItem>
-            <CheckItem>www vs non-www redirects consistently to one canonical version</CheckItem>
-            <CheckItem>No redirect chains longer than 2 hops</CheckItem>
-            <CheckItem>All 4xx and 5xx errors identified and resolved</CheckItem>
-          </ul>
-
-          <h3 className="font-[family-name:var(--font-ui)] font-semibold uppercase tracking-widest text-sm text-[#111110] mb-3 mt-6">Mobile &amp; International</h3>
-          <ul className="card-brutal-sm p-4">
-            <CheckItem>Mobile-first indexing: content identical on mobile and desktop</CheckItem>
-            <CheckItem>Viewport meta tag present on all pages</CheckItem>
-            <CheckItem>No interstitials blocking mobile content (Google policy violation)</CheckItem>
-            <CheckItem>Hreflang tags implemented correctly for multi-language sites</CheckItem>
-          </ul>
-        </div>
-
-        {/* Section 2 */}
-        <div className="mb-12">
-          <h2 className="font-[family-name:var(--font-heading)] text-[#111110] uppercase mb-1" style={{ fontSize: '38px' }}>
-            2. On-Page SEO
-          </h2>
-          <p className="font-[family-name:var(--font-body)] text-sm text-[#5A5A56] mb-6">
-            Each page should send a clear, unambiguous signal about what it covers and who it&apos;s for.
-          </p>
-
-          <h3 className="font-[family-name:var(--font-ui)] font-semibold uppercase tracking-widest text-sm text-[#111110] mb-3 mt-6">Title Tags &amp; Meta</h3>
-          <ul className="card-brutal-sm p-4 mb-6">
-            <CheckItem>Every page has a unique title tag (50–60 characters)</CheckItem>
-            <CheckItem>Primary keyword near the start of the title tag</CheckItem>
-            <CheckItem>Every page has a unique meta description (120–158 characters)</CheckItem>
-            <CheckItem>No duplicate title tags across the site</CheckItem>
-            <CheckItem>No missing title tags or meta descriptions</CheckItem>
-          </ul>
-
-          <h3 className="font-[family-name:var(--font-ui)] font-semibold uppercase tracking-widest text-sm text-[#111110] mb-3 mt-6">Header Structure</h3>
-          <ul className="card-brutal-sm p-4 mb-6">
-            <CheckItem>One H1 per page — contains the primary keyword naturally</CheckItem>
-            <CheckItem>H2s used for major section headings (not for styling)</CheckItem>
-            <CheckItem>H3s used for sub-sections within H2 groups</CheckItem>
-            <CheckItem>No heading hierarchy skips (H1 → H3 without H2)</CheckItem>
-            <CheckItem>Headers contain semantic keywords, not just brand terms</CheckItem>
-          </ul>
-
-          <h3 className="font-[family-name:var(--font-ui)] font-semibold uppercase tracking-widest text-sm text-[#111110] mb-3 mt-6">Image Optimisation</h3>
-          <ul className="card-brutal-sm p-4">
-            <CheckItem>All images have descriptive alt text (not keyword-stuffed)</CheckItem>
-            <CheckItem>Images served in next-gen formats (WebP, AVIF)</CheckItem>
-            <CheckItem>Images lazy-loaded below the fold</CheckItem>
-            <CheckItem>Hero images preloaded for LCP improvement</CheckItem>
-            <CheckItem>Image file sizes compressed (Lighthouse check)</CheckItem>
-          </ul>
-        </div>
-
-        {/* Section 3 */}
-        <div className="mb-12">
-          <h2 className="font-[family-name:var(--font-heading)] text-[#111110] uppercase mb-1" style={{ fontSize: '38px' }}>
-            3. Content Quality
-          </h2>
-          <p className="font-[family-name:var(--font-body)] text-sm text-[#5A5A56] mb-6">
-            Google&apos;s helpful content system demotes sites with thin, repetitive, or AI-spun content. These checks identify weak spots before they tank rankings.
-          </p>
-          <ul className="card-brutal-sm p-4">
-            <CheckItem>No thin pages (under 300 words without a strategic reason)</CheckItem>
-            <CheckItem>No duplicate or near-duplicate content across pages</CheckItem>
-            <CheckItem>Key pages demonstrate E-E-A-T (Experience, Expertise, Authority, Trust)</CheckItem>
-            <CheckItem>Content covers the topic more thoroughly than top-ranking competitors</CheckItem>
-            <CheckItem>Outdated statistics, broken references, or stale dates identified and updated</CheckItem>
-            <CheckItem>No keyword cannibalism — multiple pages competing for the same term</CheckItem>
-            <CheckItem>Content gap analysis done against top 5 ranking URLs</CheckItem>
-            <CheckItem>Reading grade level appropriate for the target audience</CheckItem>
-            <CheckItem>Author credentials/bio present on expert content (YMYL especially)</CheckItem>
-          </ul>
-        </div>
-
-        {/* Section 4 */}
-        <div className="mb-12">
-          <h2 className="font-[family-name:var(--font-heading)] text-[#111110] uppercase mb-1" style={{ fontSize: '38px' }}>
-            4. Backlink Profile
-          </h2>
-          <p className="font-[family-name:var(--font-body)] text-sm text-[#5A5A56] mb-6">
-            One toxic link won&apos;t sink a domain, but patterns matter. Know what&apos;s pointing at the site before making any decisions.
-          </p>
-          <ul className="card-brutal-sm p-4">
-            <CheckItem>Total referring domains count and trend (growing or declining?)</CheckItem>
-            <CheckItem>Domain Rating / Domain Authority vs top competitors</CheckItem>
-            <CheckItem>No manual actions or unnatural link penalties in Search Console</CheckItem>
-            <CheckItem>Anchor text distribution — over-optimised commercial anchors flagged</CheckItem>
-            <CheckItem>Toxic/spammy backlinks identified (use Ahrefs or Semrush)</CheckItem>
-            <CheckItem>Disavow file reviewed — not over-disavowing quality links</CheckItem>
-            <CheckItem>Internal link equity flowing to highest-priority pages</CheckItem>
-            <CheckItem>Competitor backlink gaps — sites linking to them but not you</CheckItem>
-          </ul>
-        </div>
-
-        {/* Section 5 */}
-        <div className="mb-12">
-          <h2 className="font-[family-name:var(--font-heading)] text-[#111110] uppercase mb-1" style={{ fontSize: '38px' }}>
-            5. Structured Data
-          </h2>
-          <p className="font-[family-name:var(--font-body)] text-sm text-[#5A5A56] mb-6">
-            Schema markup doesn&apos;t directly boost rankings, but rich results improve CTR — often by 20–30%.
-          </p>
-          <ul className="card-brutal-sm p-4">
-            <CheckItem>Organisation schema on homepage (name, logo, contact, social profiles)</CheckItem>
-            <CheckItem>Article or BlogPosting schema on all editorial content</CheckItem>
-            <CheckItem>Product + Offer schema on e-commerce pages</CheckItem>
-            <CheckItem>FAQ schema on relevant pages (boosts SERP real estate)</CheckItem>
-            <CheckItem>BreadcrumbList schema matches URL structure</CheckItem>
-            <CheckItem>LocalBusiness schema if applicable (includes address, hours, map)</CheckItem>
-            <CheckItem>No schema errors in Google&apos;s Rich Results Test</CheckItem>
-            <CheckItem>Structured data validated in Schema.org validator</CheckItem>
-          </ul>
-        </div>
-
-        {/* Related guides */}
-        <div className="mb-12 p-6 bg-[#111110]">
-          <p className="label text-[#5A5A56] mb-3">Related Guides</p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <Link href="/guides/how-to-do-seo-audit" className="block p-3 border border-[#333330] hover:border-[#B8FF00] transition-colors">
-              <p className="font-[family-name:var(--font-ui)] text-xs text-[#B8FF00] uppercase tracking-widest mb-1">How-To</p>
-              <p className="font-[family-name:var(--font-body)] text-sm text-[#F2F2EF]">How to Do a Complete SEO Audit</p>
-            </Link>
-            <Link href="/guides/seo-audit-report-template" className="block p-3 border border-[#333330] hover:border-[#B8FF00] transition-colors">
-              <p className="font-[family-name:var(--font-ui)] text-xs text-[#B8FF00] uppercase tracking-widest mb-1">Template</p>
-              <p className="font-[family-name:var(--font-body)] text-sm text-[#F2F2EF]">SEO Audit Report Template</p>
-            </Link>
-            <Link href="/guides/seo-audit-for-clients" className="block p-3 border border-[#333330] hover:border-[#B8FF00] transition-colors">
-              <p className="font-[family-name:var(--font-ui)] text-xs text-[#B8FF00] uppercase tracking-widest mb-1">Client Work</p>
-              <p className="font-[family-name:var(--font-body)] text-sm text-[#F2F2EF]">Presenting an SEO Audit to Clients</p>
-            </Link>
+      {/* Footer */}
+      <footer className="max-w-[1200px] mx-auto px-6 py-10 border-t-2 border-[#111110]">
+        <div className="flex items-center justify-between flex-wrap gap-4">
+          <Link href="/" className="font-[family-name:var(--font-heading)] text-xl text-[#5A5A56] uppercase tracking-wider">AuditBrief</Link>
+          <div className="flex items-center gap-6 font-[family-name:var(--font-ui)] text-xs text-[#5A5A56] uppercase tracking-wider">
+            <Link href="/guides/how-to-do-seo-audit" className="hover:text-[#111110] transition-colors">How-To Guide</Link>
+            <Link href="/guides/seo-audit-for-clients" className="hover:text-[#111110] transition-colors">Client Audits</Link>
+            <Link href="/guides/seo-audit-report-template" className="hover:text-[#111110] transition-colors">Report Template</Link>
+            <Link href="/auth/login" className="hover:text-[#111110] transition-colors">Login</Link>
           </div>
         </div>
-
-        {/* CTA */}
-        <div className="card-brutal p-8 text-center">
-          <p className="label mb-3">Automate all 87 checks</p>
-          <h2 className="font-[family-name:var(--font-heading)] text-[#111110] uppercase leading-none mb-4" style={{ fontSize: '44px' }}>
-            Stop ticking boxes manually.
-          </h2>
-          <p className="font-[family-name:var(--font-body)] text-[#5A5A56] mb-6 max-w-[480px] mx-auto">
-            AuditBrief runs every check on this list, scores the site, and outputs a PDF your clients can actually read — in under 2 minutes.
-          </p>
-          <Link href="https://auditpdf.com" className="btn-accent inline-block">
-            Run a free audit now →
-          </Link>
-          <p className="font-[family-name:var(--font-ui)] text-xs text-[#5A5A56] mt-3 uppercase tracking-wider">1 free audit/month — no credit card required</p>
-        </div>
-      </main>
+      </footer>
     </div>
   )
 }
