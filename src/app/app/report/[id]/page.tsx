@@ -48,7 +48,7 @@ export default function AuditReportPage() {
   const [report, setReport] = useState<AuditReportDTO | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
-  const [exporting, setExporting] = useState(false)
+  const [checkingOut, setCheckingOut] = useState(false)
   const [activeSection, setActiveSection] = useState<string | null>(null)
 
   useEffect(() => {
@@ -59,6 +59,10 @@ export default function AuditReportPage() {
           const data = await res.json()
           setReport(data)
           if (data.sections?.[0]) setActiveSection(data.sections[0].id)
+          // Store full report in sessionStorage for the success page
+          try {
+            sessionStorage.setItem(`auditbrief_report_${reportId}`, JSON.stringify(data))
+          } catch { /* storage quota exceeded — ignore */ }
         }
       } catch { /* ignore */ } finally { setLoading(false) }
     }
@@ -77,26 +81,33 @@ export default function AuditReportPage() {
     } catch { /* ignore */ } finally { setSaving(false) }
   }
 
-  const handleExportPdf = async () => {
+  const handleCheckout = async () => {
     if (!report) return
-    setExporting(true)
+    setCheckingOut(true)
     try {
+      // Persist latest state first so success page can pull it
       await saveReport()
-      const { generateAuditPdf } = await import('@/lib/export/audit-pdf-generator')
-      const blob = await generateAuditPdf(report)
-      const url = URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = `auditbrief-${report.companyName.replace(/[^a-zA-Z0-9]+/g, '-')}-${report.auditDate}.pdf`
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
-      URL.revokeObjectURL(url)
+      // Also refresh sessionStorage with latest report
+      try {
+        sessionStorage.setItem(`auditbrief_report_${reportId}`, JSON.stringify(report))
+      } catch { /* ignore */ }
+
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reportId }),
+      })
+      const data = await res.json()
+      if (data.url) {
+        window.location.href = data.url
+      } else {
+        alert('Checkout failed — please try again')
+        setCheckingOut(false)
+      }
     } catch (err) {
-      console.error('PDF export failed:', err)
-      alert('PDF export failed — check console')
-    } finally {
-      setExporting(false)
+      console.error('Checkout error:', err)
+      alert('Checkout failed — check console')
+      setCheckingOut(false)
     }
   }
 
@@ -117,7 +128,10 @@ export default function AuditReportPage() {
     )
   }
 
-  const currentSection = report.sections.find(s => s.id === activeSection)
+  // Preview: show only the first section's issues in the main panel
+  const firstSection = report.sections[0]
+  const currentSection = report.sections.find(s => s.id === activeSection) || firstSection
+  const isPreviewSection = currentSection?.id === firstSection?.id
 
   return (
     <div className="max-w-[1100px] mx-auto">
@@ -137,9 +151,20 @@ export default function AuditReportPage() {
           <Button variant="secondary" size="sm" onClick={saveReport} loading={saving}>
             Save
           </Button>
-          <Button size="sm" onClick={handleExportPdf} loading={exporting}>
-            Export PDF
-          </Button>
+          <button
+            onClick={handleCheckout}
+            disabled={checkingOut}
+            className="btn-accent flex items-center gap-2"
+          >
+            {checkingOut ? (
+              <>
+                <span className="w-4 h-4 border-2 border-[#111110] border-t-transparent rounded-full animate-spin" />
+                Redirecting...
+              </>
+            ) : (
+              'Download Full Audit (PDF + PPTX) — £9'
+            )}
+          </button>
         </div>
       </div>
 
@@ -215,7 +240,7 @@ export default function AuditReportPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Active section issues */}
+        {/* Active section issues — preview: first section only, others locked */}
         <div className="lg:col-span-2">
           {currentSection && (
             <div>
@@ -237,13 +262,50 @@ export default function AuditReportPage() {
                 {currentSection.summary}
               </p>
 
-              <div className="space-y-3">
-                {[...currentSection.issues]
-                  .sort((a, b) => SEVERITY_ORDER.indexOf(a.severity) - SEVERITY_ORDER.indexOf(b.severity))
-                  .map(issue => (
-                    <IssueCard key={issue.id} issue={issue} />
-                  ))}
-              </div>
+              {isPreviewSection ? (
+                /* First section — full preview */
+                <div className="space-y-3">
+                  {[...currentSection.issues]
+                    .sort((a, b) => SEVERITY_ORDER.indexOf(a.severity) - SEVERITY_ORDER.indexOf(b.severity))
+                    .map(issue => (
+                      <IssueCard key={issue.id} issue={issue} />
+                    ))}
+                </div>
+              ) : (
+                /* Locked sections — paywall overlay */
+                <div className="relative">
+                  {/* Blurred preview */}
+                  <div className="space-y-3 select-none" style={{ filter: 'blur(4px)', pointerEvents: 'none' }}>
+                    {[...currentSection.issues]
+                      .sort((a, b) => SEVERITY_ORDER.indexOf(a.severity) - SEVERITY_ORDER.indexOf(b.severity))
+                      .slice(0, 3)
+                      .map(issue => (
+                        <IssueCard key={issue.id} issue={issue} />
+                      ))}
+                  </div>
+                  {/* Paywall card */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="bg-[#F2F2EF] border-2 border-[#111110] p-8 text-center max-w-sm shadow-[4px_4px_0_#111110]">
+                      <p className="font-[family-name:var(--font-heading)] text-[#111110] uppercase mb-2" style={{ fontSize: '28px' }}>
+                        Full audit locked
+                      </p>
+                      <p className="font-[family-name:var(--font-body)] text-sm text-[#5A5A56] mb-6">
+                        Get the complete {report.sections.length}-section analysis + PDF + editable PPTX deck.
+                      </p>
+                      <button
+                        onClick={handleCheckout}
+                        disabled={checkingOut}
+                        className="btn-accent w-full text-center"
+                      >
+                        {checkingOut ? 'Redirecting...' : 'Unlock — £9'}
+                      </button>
+                      <p className="font-[family-name:var(--font-body)] text-xs text-[#5A5A56] mt-3">
+                        One-time payment. PDF + PPTX included.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -297,21 +359,49 @@ export default function AuditReportPage() {
               ))}
             </div>
           </div>
+
+          {/* Upgrade CTA in sidebar */}
+          <div className="bg-[#111110] border-2 border-[#111110] p-6">
+            <p className="font-[family-name:var(--font-heading)] text-[#B8FF00] uppercase mb-2" style={{ fontSize: '22px' }}>
+              Get the full report
+            </p>
+            <p className="font-[family-name:var(--font-body)] text-xs text-[#E8E8E4] mb-4">
+              PDF + editable PowerPoint deck. Share with clients in minutes.
+            </p>
+            <button
+              onClick={handleCheckout}
+              disabled={checkingOut}
+              className="btn-accent w-full text-center text-sm"
+            >
+              {checkingOut ? 'Redirecting...' : 'Download — £9'}
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Bottom bar */}
       <div className="mt-10 flex items-center justify-between py-6 border-t-2 border-[#111110]">
         <p className="font-[family-name:var(--font-body)] text-sm text-[#5A5A56]">
-          {report.sections.reduce((n, s) => n + s.issues.length, 0)} issues across 6 categories
+          {report.sections.reduce((n, s) => n + s.issues.length, 0)} issues across {report.sections.length} categories
         </p>
         <div className="flex items-center gap-3">
           <Button variant="secondary" onClick={saveReport} loading={saving}>
             Save
           </Button>
-          <Button onClick={handleExportPdf} loading={exporting}>
-            Export PDF
-          </Button>
+          <button
+            onClick={handleCheckout}
+            disabled={checkingOut}
+            className="btn-accent flex items-center gap-2"
+          >
+            {checkingOut ? (
+              <>
+                <span className="w-4 h-4 border-2 border-[#111110] border-t-transparent rounded-full animate-spin" />
+                Redirecting...
+              </>
+            ) : (
+              'Download Full Audit (PDF + PPTX) — £9'
+            )}
+          </button>
         </div>
       </div>
     </div>
