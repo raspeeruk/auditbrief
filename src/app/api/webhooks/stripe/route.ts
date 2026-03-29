@@ -25,17 +25,28 @@ export async function POST(req: NextRequest) {
     case 'checkout.session.completed': {
       const session = event.data.object as Stripe.Checkout.Session
       const userId = session.metadata?.userId
-      if (!userId) break
+      const reportId = session.metadata?.reportId
 
-      await supabase
-        .from('profiles')
-        .update({
-          stripe_customer_id: session.customer as string,
-          stripe_subscription_id: session.subscription as string,
-          subscription_status: 'active',
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', userId)
+      // One-time report unlock — mark the report as paid
+      if (session.mode === 'payment' && reportId) {
+        await supabase
+          .from('audit_reports')
+          .update({ paid: true, updated_at: new Date().toISOString() })
+          .eq('id', reportId)
+      }
+
+      // Subscription signup — update user profile
+      if (session.mode === 'subscription' && userId) {
+        await supabase
+          .from('profiles')
+          .update({
+            stripe_customer_id: session.customer as string,
+            stripe_subscription_id: session.subscription as string,
+            subscription_status: 'active',
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', userId)
+      }
       break
     }
 
