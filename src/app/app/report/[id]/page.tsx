@@ -128,10 +128,8 @@ export default function AuditReportPage() {
     )
   }
 
-  // Preview: show only the first section's issues in the main panel
-  const firstSection = report.sections[0]
-  const currentSection = report.sections.find(s => s.id === activeSection) || firstSection
-  const isPreviewSection = currentSection?.id === firstSection?.id
+  const currentSection = report.sections.find(s => s.id === activeSection) || report.sections[0]
+  const isPaid = !!report.paid
 
   return (
     <div className={`max-w-[1100px] mx-auto ${!report.paid ? 'pb-20' : ''}`}>
@@ -194,13 +192,19 @@ export default function AuditReportPage() {
         {/* Executive summary */}
         <div className="md:col-span-2 p-8">
           <p className="label mb-3">Executive Summary</p>
-          <textarea
-            value={report.executiveSummary}
-            onChange={e => setReport(prev => prev ? { ...prev, executiveSummary: e.target.value } : prev)}
-            rows={5}
-            className="w-full font-[family-name:var(--font-body)] text-sm text-[#111110] bg-transparent resize-none focus:outline-none leading-relaxed placeholder:text-[#C8C8C4]"
-            placeholder="Executive summary..."
-          />
+          {isPaid ? (
+            <textarea
+              value={report.executiveSummary}
+              onChange={e => setReport(prev => prev ? { ...prev, executiveSummary: e.target.value } : prev)}
+              rows={5}
+              className="w-full font-[family-name:var(--font-body)] text-sm text-[#111110] bg-transparent resize-none focus:outline-none leading-relaxed placeholder:text-[#C8C8C4]"
+              placeholder="Executive summary..."
+            />
+          ) : (
+            <p className="font-[family-name:var(--font-body)] text-sm text-[#111110] leading-relaxed">
+              {report.executiveSummary}
+            </p>
+          )}
         </div>
       </div>
 
@@ -262,48 +266,29 @@ export default function AuditReportPage() {
                 {currentSection.summary}
               </p>
 
-              {isPreviewSection ? (
-                /* First section — full preview */
-                <div className="space-y-3">
-                  {[...currentSection.issues]
-                    .sort((a, b) => SEVERITY_ORDER.indexOf(a.severity) - SEVERITY_ORDER.indexOf(b.severity))
-                    .map(issue => (
-                      <IssueCard key={issue.id} issue={issue} />
-                    ))}
-                </div>
-              ) : (
-                /* Locked sections — paywall overlay */
-                <div className="relative">
-                  {/* Blurred preview */}
-                  <div className="space-y-3 select-none" style={{ filter: 'blur(4px)', pointerEvents: 'none' }}>
-                    {[...currentSection.issues]
-                      .sort((a, b) => SEVERITY_ORDER.indexOf(a.severity) - SEVERITY_ORDER.indexOf(b.severity))
-                      .slice(0, 3)
-                      .map(issue => (
-                        <IssueCard key={issue.id} issue={issue} />
-                      ))}
-                  </div>
-                  {/* Paywall card */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="bg-[#F2F2EF] border-2 border-[#111110] p-8 text-center max-w-sm shadow-[4px_4px_0_#111110]">
-                      <p className="font-[family-name:var(--font-heading)] text-[#111110] uppercase mb-2" style={{ fontSize: '28px' }}>
-                        Full audit locked
-                      </p>
-                      <p className="font-[family-name:var(--font-body)] text-sm text-[#5A5A56] mb-6">
-                        Get the complete {report.sections.length}-section analysis + PDF + editable PPTX deck.
-                      </p>
-                      <button
-                        onClick={handleCheckout}
-                        disabled={checkingOut}
-                        className="btn-accent w-full text-center"
-                      >
-                        {checkingOut ? 'Redirecting...' : 'Unlock — £9'}
-                      </button>
-                      <p className="font-[family-name:var(--font-body)] text-xs text-[#5A5A56] mt-3">
-                        One-time payment. PDF + PPTX included.
-                      </p>
-                    </div>
-                  </div>
+              <div className="space-y-3">
+                {[...currentSection.issues]
+                  .sort((a, b) => SEVERITY_ORDER.indexOf(a.severity) - SEVERITY_ORDER.indexOf(b.severity))
+                  .map(issue => (
+                    <IssueCard key={issue.id} issue={issue} isPaid={isPaid} onUnlock={handleCheckout} checkingOut={checkingOut} />
+                  ))}
+              </div>
+
+              {!isPaid && (
+                <div className="mt-6 bg-[#111110] border-2 border-[#111110] p-6 text-center">
+                  <p className="font-[family-name:var(--font-heading)] text-[#B8FF00] uppercase mb-1" style={{ fontSize: '22px' }}>
+                    {currentSection.issues.filter(i => i.severity === 'critical' || i.severity === 'warning').length} issues need fixing
+                  </p>
+                  <p className="font-[family-name:var(--font-body)] text-xs text-[#E8E8E4] mb-4">
+                    Unlock recommendations + how to fix each issue
+                  </p>
+                  <button
+                    onClick={handleCheckout}
+                    disabled={checkingOut}
+                    className="btn-accent"
+                  >
+                    {checkingOut ? 'Redirecting...' : 'Unlock Full Report — £9'}
+                  </button>
                 </div>
               )}
             </div>
@@ -327,9 +312,15 @@ export default function AuditReportPage() {
                     <p className="font-[family-name:var(--font-ui)] text-xs font-semibold uppercase tracking-wider text-[#111110] mb-0.5">
                       {issue.title}
                     </p>
-                    <p className="font-[family-name:var(--font-body)] text-[11px] text-[#5A5A56]">
-                      {issue.recommendation}
-                    </p>
+                    {isPaid ? (
+                      <p className="font-[family-name:var(--font-body)] text-[11px] text-[#5A5A56]">
+                        {issue.recommendation}
+                      </p>
+                    ) : (
+                      <p className="font-[family-name:var(--font-body)] text-[11px] text-[#B8FF00] italic">
+                        Unlock to see fix
+                      </p>
+                    )}
                   </div>
                 </div>
               ))}
@@ -351,9 +342,15 @@ export default function AuditReportPage() {
                     <p className="font-[family-name:var(--font-ui)] text-xs font-semibold uppercase tracking-wider text-[#111110] mb-0.5">
                       {issue.title}
                     </p>
-                    <p className="font-[family-name:var(--font-body)] text-[11px] text-[#5A5A56]">
-                      {issue.recommendation}
-                    </p>
+                    {isPaid ? (
+                      <p className="font-[family-name:var(--font-body)] text-[11px] text-[#5A5A56]">
+                        {issue.recommendation}
+                      </p>
+                    ) : (
+                      <p className="font-[family-name:var(--font-body)] text-[11px] text-[#B8FF00] italic">
+                        Unlock to see fix
+                      </p>
+                    )}
                   </div>
                 </div>
               ))}
@@ -438,7 +435,7 @@ export default function AuditReportPage() {
   )
 }
 
-function IssueCard({ issue }: { issue: AuditIssue }) {
+function IssueCard({ issue, isPaid, onUnlock, checkingOut }: { issue: AuditIssue; isPaid: boolean; onUnlock: () => void; checkingOut: boolean }) {
   const [open, setOpen] = useState(false)
 
   return (
@@ -458,25 +455,42 @@ function IssueCard({ issue }: { issue: AuditIssue }) {
 
       {open && (
         <div className="border-t border-[#C8C8C4] p-4 space-y-3">
-          <p className="font-[family-name:var(--font-body)] text-sm text-[#5A5A56] leading-relaxed">
-            {issue.description}
-          </p>
-          <div className="border-l-2 border-[#B8FF00] pl-3">
-            <p className="label mb-1">Recommendation</p>
-            <p className="font-[family-name:var(--font-body)] text-sm text-[#111110] leading-relaxed">
-              {issue.recommendation}
-            </p>
-          </div>
-          {issue.affectedPages && issue.affectedPages.length > 0 && (
-            <div>
-              <p className="label mb-1">Affected pages</p>
-              <ul className="space-y-1">
-                {issue.affectedPages.map((page, i) => (
-                  <li key={i} className="font-[family-name:var(--font-body)] text-xs text-[#5A5A56] break-all">
-                    {page}
-                  </li>
-                ))}
-              </ul>
+          {isPaid ? (
+            <>
+              <p className="font-[family-name:var(--font-body)] text-sm text-[#5A5A56] leading-relaxed">
+                {issue.description}
+              </p>
+              <div className="border-l-2 border-[#B8FF00] pl-3">
+                <p className="label mb-1">Recommendation</p>
+                <p className="font-[family-name:var(--font-body)] text-sm text-[#111110] leading-relaxed">
+                  {issue.recommendation}
+                </p>
+              </div>
+              {issue.affectedPages && issue.affectedPages.length > 0 && (
+                <div>
+                  <p className="label mb-1">Affected pages</p>
+                  <ul className="space-y-1">
+                    {issue.affectedPages.map((page, i) => (
+                      <li key={i} className="font-[family-name:var(--font-body)] text-xs text-[#5A5A56] break-all">
+                        {page}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="text-center py-4">
+              <p className="font-[family-name:var(--font-body)] text-sm text-[#5A5A56] mb-3">
+                Description and recommendation locked
+              </p>
+              <button
+                onClick={(e) => { e.stopPropagation(); onUnlock(); }}
+                disabled={checkingOut}
+                className="btn-accent text-sm"
+              >
+                {checkingOut ? 'Redirecting...' : 'Unlock — £9'}
+              </button>
             </div>
           )}
         </div>
