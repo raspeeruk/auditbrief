@@ -214,7 +214,7 @@ Return ONLY valid JSON matching this exact structure (no markdown, no preamble):
   // Use streaming to keep connection alive on Netlify (avoids gateway timeout)
   let rawJson = ''
   const stream = client.messages.stream({
-    model: 'claude-sonnet-4-5-20250514',
+    model: 'claude-sonnet-4-6',
     max_tokens: 4096,
     messages: [{ role: 'user', content: prompt }],
   })
