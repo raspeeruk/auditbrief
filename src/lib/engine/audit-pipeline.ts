@@ -212,20 +212,41 @@ Return ONLY valid JSON matching this exact structure (no markdown, no preamble):
 }`
 
   // Use streaming to keep connection alive on Netlify (avoids gateway timeout)
+  // Retry up to 3 times with backoff for transient errors (overloaded, 529, etc.)
+  const models = ['claude-sonnet-4-6', 'claude-haiku-4-5-20251001'] as const
   let rawJson = ''
-  const stream = client.messages.stream({
-    model: 'claude-sonnet-4-6',
-    max_tokens: 4096,
-    messages: [{ role: 'user', content: prompt }],
-  })
+  let lastError: Error | null = null
 
-  for await (const event of stream) {
-    if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
-      rawJson += event.delta.text
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const model = attempt < 2 ? models[0] : models[1] // fall back to Haiku on 3rd try
+    try {
+      rawJson = ''
+      const stream = client.messages.stream({
+        model,
+        max_tokens: 4096,
+        messages: [{ role: 'user', content: prompt }],
+      })
+
+      for await (const event of stream) {
+        if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
+          rawJson += event.delta.text
+        }
+      }
+
+      rawJson = rawJson.trim()
+      lastError = null
+      break
+    } catch (err) {
+      lastError = err instanceof Error ? err : new Error(String(err))
+      const isRetryable = lastError.message.includes('overloaded') ||
+        lastError.message.includes('529') ||
+        lastError.message.includes('rate')
+      if (!isRetryable || attempt === 2) break
+      await new Promise(r => setTimeout(r, (attempt + 1) * 3000))
     }
   }
 
-  rawJson = rawJson.trim()
+  if (lastError) throw lastError
   // Strip markdown code fences if present
   rawJson = rawJson.replace(/^```(?:json)?\n?/, '').replace(/\n?```$/, '')
 
