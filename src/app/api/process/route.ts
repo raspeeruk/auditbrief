@@ -39,6 +39,11 @@ export async function POST(req: NextRequest) {
           controller.enqueue(encoder.encode(`data: ${JSON.stringify(data)}\n\n`))
         }
 
+        // Send heartbeats every 3s to prevent Netlify gateway timeout
+        const heartbeat = setInterval(() => {
+          controller.enqueue(encoder.encode(`: heartbeat\n\n`))
+        }, 3000)
+
         try {
           const report = await runAuditPipeline(
             url,
@@ -56,6 +61,7 @@ export async function POST(req: NextRequest) {
           console.error('[audit-pipeline]', error)
           send({ type: 'error', error: msg })
         } finally {
+          clearInterval(heartbeat)
           controller.close()
         }
       },

@@ -211,18 +211,21 @@ Return ONLY valid JSON matching this exact structure (no markdown, no preamble):
   "quickWins": [ <5 AuditIssue objects> ]
 }`
 
-  const message = await client.messages.create({
-    model: 'claude-sonnet-4-5',
+  // Use streaming to keep connection alive on Netlify (avoids gateway timeout)
+  let rawJson = ''
+  const stream = client.messages.stream({
+    model: 'claude-sonnet-4-5-20250514',
     max_tokens: 4096,
     messages: [{ role: 'user', content: prompt }],
   })
 
-  const content = message.content[0]
-  if (content.type !== 'text') {
-    throw new Error('Unexpected Claude response type')
+  for await (const event of stream) {
+    if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
+      rawJson += event.delta.text
+    }
   }
 
-  let rawJson = content.text.trim()
+  rawJson = rawJson.trim()
   // Strip markdown code fences if present
   rawJson = rawJson.replace(/^```(?:json)?\n?/, '').replace(/\n?```$/, '')
 
