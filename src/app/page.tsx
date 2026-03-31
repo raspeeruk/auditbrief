@@ -10,16 +10,22 @@ export default function LandingPage() {
         </span>
         <div className="flex items-center gap-4">
           <Link
+            href="/pricing"
+            className="font-[family-name:var(--font-ui)] text-sm font-semibold uppercase tracking-widest text-[#5A5A56] hover:text-[#111110] transition-colors"
+          >
+            Pricing
+          </Link>
+          <Link
             href="/auth/login"
             className="font-[family-name:var(--font-ui)] text-sm font-semibold uppercase tracking-widest text-[#5A5A56] hover:text-[#111110] transition-colors"
           >
             Login
           </Link>
           <Link
-            href="/auth/signup"
+            href="/app/upload?demo"
             className="btn-accent inline-block"
           >
-            Start Free
+            Audit a site
           </Link>
         </div>
       </nav>
@@ -27,26 +33,26 @@ export default function LandingPage() {
       {/* Hero */}
       <section className="max-w-[1200px] mx-auto px-6 pt-16 pb-20 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div>
-          <p className="label mb-4">For digital agencies &amp; SEO freelancers</p>
+          <p className="label mb-4">Instant SEO audits &mdash; no signup required</p>
           <h1 className="font-[family-name:var(--font-heading)] text-[#111110] mb-6 leading-none uppercase" style={{ fontSize: '76px' }}>
             SEO audits that look like consulting reports.
           </h1>
           <p className="font-[family-name:var(--font-body)] text-lg text-[#5A5A56] leading-relaxed max-w-[500px] mb-10">
-            Enter a URL. AI analyses the site in under 2 minutes. Download a branded PDF your clients will actually read — without spending hours formatting.
+            Enter a URL. AI analyses the site in under 2 minutes. See full results instantly. Download the PDF for &pound;9.
           </p>
           <div className="flex items-center gap-4 flex-wrap">
-            <Link href="/auth/signup" className="btn-accent inline-block">
-              Audit a site free
+            <Link href="/app/upload?demo" className="btn-accent inline-block">
+              Audit any website free
             </Link>
             <Link
-              href="/app/upload"
+              href="/pricing"
               className="btn-ghost inline-block"
             >
-              See demo report
+              See pricing
             </Link>
           </div>
           <p className="font-[family-name:var(--font-ui)] text-xs text-[#5A5A56] mt-4 uppercase tracking-wider">
-            1 free audit/month &mdash; no credit card required
+            Free preview &mdash; pay &pound;9 per report for PDF + PPTX
           </p>
         </div>
 
@@ -221,30 +227,55 @@ export default function LandingPage() {
         <div className="mb-16">
           <p className="label mb-3">Pricing</p>
           <h2 className="font-[family-name:var(--font-heading)] text-[#111110] uppercase">
-            Audits for every workflow
+            &pound;9 per report. No subscription required.
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border-2 border-[#111110]">
+        {/* Per-report hero pricing */}
+        <div className="border-2 border-[#111110] bg-[#111110] p-10 mb-8">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+            <div>
+              <p className="label text-[#B8FF00] mb-3">Pay per report</p>
+              <div className="flex items-baseline gap-2 mb-3">
+                <span className="font-[family-name:var(--font-heading)] text-[72px] text-[#B8FF00] leading-none">
+                  &pound;9
+                </span>
+                <span className="font-[family-name:var(--font-body)] text-lg text-[#E8E8E4]">
+                  one-time
+                </span>
+              </div>
+              <ul className="space-y-2">
+                {[
+                  'Full 6-section SEO audit',
+                  'PDF report + editable PPTX deck',
+                  'No account needed — guest checkout',
+                  'Results in under 2 minutes',
+                ].map(f => (
+                  <li key={f} className="font-[family-name:var(--font-body)] text-sm flex items-start gap-2 text-[#E8E8E4]">
+                    <span className="text-[#B8FF00] mt-0.5 shrink-0">+</span>
+                    {f}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="shrink-0">
+              <Link href="/app/upload?demo" className="btn-accent inline-block text-lg px-10 py-4">
+                Try a free audit
+              </Link>
+              <p className="font-[family-name:var(--font-body)] text-xs text-[#E8E8E4] mt-3 text-center">
+                Preview free. Pay to download.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Team plans */}
+        <p className="label mb-4">For teams &amp; agencies</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 border-2 border-[#111110]">
           {[
             {
-              tier: 'Free',
-              price: '£0',
-              period: '/month',
-              note: 'Forever free',
-              features: [
-                '1 audit per month',
-                'Full 6-section report',
-                'PDF download',
-                'AuditBrief watermark',
-              ],
-              cta: 'Start free',
-              href: '/auth/signup',
-              highlight: false,
-            },
-            {
               tier: 'Pro',
-              price: '£29',
+              price: '&pound;29',
               period: '/month',
               note: '7-day free trial',
               features: [
@@ -255,11 +286,10 @@ export default function LandingPage() {
               ],
               cta: 'Start trial',
               href: '/auth/signup?plan=pro',
-              highlight: true,
             },
             {
               tier: 'Agency',
-              price: '£79',
+              price: '&pound;79',
               period: '/month',
               note: 'For teams',
               features: [
@@ -270,35 +300,28 @@ export default function LandingPage() {
               ],
               cta: 'Start trial',
               href: '/auth/signup?plan=agency',
-              highlight: false,
             },
           ].map((plan, i) => (
             <div
               key={plan.tier}
-              className={`p-8 relative ${i < 2 ? 'border-r-2 border-[#111110]' : ''} ${plan.highlight ? 'bg-[#111110]' : ''}`}
+              className={`p-8 ${i < 1 ? 'border-r-2 border-[#111110]' : ''}`}
             >
-              {plan.highlight && (
-                <div className="absolute -top-3 left-8">
-                  <span className="badge-pass px-3 py-1 text-xs">Most popular</span>
-                </div>
-              )}
-              <p className={`label mb-4 ${plan.highlight ? 'text-[#B8FF00]' : ''}`}>{plan.tier}</p>
+              <p className="label mb-4">{plan.tier}</p>
               <div className="flex items-baseline gap-1 mb-2">
                 <span
-                  className={`font-[family-name:var(--font-heading)] text-[52px] leading-none ${plan.highlight ? 'text-[#B8FF00]' : 'text-[#111110]'}`}
-                >
-                  {plan.price}
-                </span>
-                <span className={`font-[family-name:var(--font-body)] text-sm ${plan.highlight ? 'text-[#E8E8E4]' : 'text-[#5A5A56]'}`}>
+                  className="font-[family-name:var(--font-heading)] text-[44px] leading-none text-[#111110]"
+                  dangerouslySetInnerHTML={{ __html: plan.price }}
+                />
+                <span className="font-[family-name:var(--font-body)] text-sm text-[#5A5A56]">
                   {plan.period}
                 </span>
               </div>
-              <p className={`font-[family-name:var(--font-ui)] text-xs uppercase tracking-wider mb-6 ${plan.highlight ? 'text-[#B8FF00]' : 'text-[#5A5A56]'}`}>
+              <p className="font-[family-name:var(--font-ui)] text-xs uppercase tracking-wider mb-6 text-[#5A5A56]">
                 {plan.note}
               </p>
               <ul className="space-y-2 mb-8">
                 {plan.features.map(f => (
-                  <li key={f} className={`font-[family-name:var(--font-body)] text-sm flex items-start gap-2 ${plan.highlight ? 'text-[#E8E8E4]' : 'text-[#5A5A56]'}`}>
+                  <li key={f} className="font-[family-name:var(--font-body)] text-sm flex items-start gap-2 text-[#5A5A56]">
                     <span className="text-[#B8FF00] mt-0.5 shrink-0">+</span>
                     {f}
                   </li>
@@ -306,10 +329,7 @@ export default function LandingPage() {
               </ul>
               <Link
                 href={plan.href}
-                className={plan.highlight
-                  ? 'btn-accent w-full text-center block'
-                  : 'btn-ghost w-full text-center block'
-                }
+                className="btn-ghost w-full text-center block"
               >
                 {plan.cta}
               </Link>
@@ -351,12 +371,12 @@ export default function LandingPage() {
               a: 'Yes. The executive summary is fully editable on the report page before you download the PDF. Coming soon: inline issue editing.',
             },
             {
-              q: 'Do you store the sites I audit?',
-              a: 'Reports are stored server-side tied to your account. You can delete any report at any time. We never sell or share your data.',
+              q: 'Do I need an account?',
+              a: 'No. You can audit any site and preview results without signing up. When you want the PDF + PPTX, pay \u00A39 at checkout — no account needed. Create an account only if you want Pro or Agency features.',
             },
             {
-              q: 'What if I need more than 20 audits/month?',
-              a: 'The Agency plan includes unlimited audits. For very large volumes, get in touch — we can set up custom pricing.',
+              q: 'What do I get for \u00A39?',
+              a: 'The full 6-section audit report as a print-ready PDF plus an editable 5-slide PowerPoint deck. Both download instantly after payment.',
             },
           ].map(faq => (
             <div key={faq.q}>
@@ -384,9 +404,9 @@ export default function LandingPage() {
             What score does your client&apos;s site get?
           </h2>
           <p className="font-[family-name:var(--font-body)] text-[#5A5A56] mb-10 max-w-[500px] mx-auto">
-            First audit is free. No credit card. Results in under 2 minutes.
+            Free preview in under 2 minutes. Download the full PDF + PPTX for &pound;9.
           </p>
-          <Link href="/auth/signup" className="btn-accent inline-block text-lg px-10 py-4">
+          <Link href="/app/upload?demo" className="btn-accent inline-block text-lg px-10 py-4">
             Audit a site now
           </Link>
         </div>
@@ -400,6 +420,7 @@ export default function LandingPage() {
             AuditBrief
           </span>
           <div className="flex items-center gap-6 font-[family-name:var(--font-ui)] text-xs text-[#5A5A56] uppercase tracking-wider">
+            <Link href="/pricing" className="hover:text-[#111110] transition-colors">Pricing</Link>
             <Link href="/auth/login" className="hover:text-[#111110] transition-colors">Login</Link>
             <Link href="/privacy" className="hover:text-[#111110] transition-colors">Privacy</Link>
             <Link href="/terms" className="hover:text-[#111110] transition-colors">Terms</Link>

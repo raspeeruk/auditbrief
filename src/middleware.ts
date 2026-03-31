@@ -33,6 +33,11 @@ export async function middleware(request: NextRequest) {
     return supabaseResponse
   }
 
+  // Report pages and success page pass through without auth (guest checkout flow)
+  if (pathname.match(/^\/app\/report\//) || pathname === '/app/success') {
+    return supabaseResponse
+  }
+
   // Protected routes — redirect to login if no auth
   if (pathname.startsWith('/app') && !user) {
     const url = request.nextUrl.clone()

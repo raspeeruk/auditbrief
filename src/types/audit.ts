@@ -27,6 +27,7 @@ export interface AuditReportDTO {
   executiveSummary: string
   topPriorities: AuditIssue[] // top 5 critical issues
   quickWins: AuditIssue[] // easy fixes with high impact
+  paid?: boolean // true after Stripe checkout completes
   agencyBranding?: {
     name: string
     logo?: string

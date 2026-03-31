@@ -134,7 +134,7 @@ export default function AuditReportPage() {
   const isPreviewSection = currentSection?.id === firstSection?.id
 
   return (
-    <div className="max-w-[1100px] mx-auto">
+    <div className={`max-w-[1100px] mx-auto ${!report.paid ? 'pb-20' : ''}`}>
       {/* Report header */}
       <div className="mb-8 flex items-start justify-between gap-6 flex-wrap">
         <div>
@@ -404,6 +404,36 @@ export default function AuditReportPage() {
           </button>
         </div>
       </div>
+
+      {/* Sticky bottom CTA bar for unpaid reports */}
+      {!report.paid && (
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-[#111110] border-t-2 border-[#B8FF00]">
+          <div className="max-w-[1100px] mx-auto px-6 py-4 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3 min-w-0">
+              <span className="font-[family-name:var(--font-heading)] text-[#B8FF00] text-[28px] leading-none shrink-0">
+                {report.overallScore}
+              </span>
+              <p className="font-[family-name:var(--font-body)] text-sm text-[#E8E8E4] truncate">
+                Get the full report + PDF + PPTX download
+              </p>
+            </div>
+            <button
+              onClick={handleCheckout}
+              disabled={checkingOut}
+              className="btn-accent shrink-0 flex items-center gap-2"
+            >
+              {checkingOut ? (
+                <>
+                  <span className="w-4 h-4 border-2 border-[#111110] border-t-transparent rounded-full animate-spin" />
+                  Redirecting...
+                </>
+              ) : (
+                'Unlock Full Report — £9'
+              )}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

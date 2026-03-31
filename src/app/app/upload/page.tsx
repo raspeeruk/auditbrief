@@ -1,7 +1,7 @@
 'use client'
 
 import { Suspense, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { ProgressBar } from '@/components/ui/progress-bar'
 
 export default function UploadPageWrapper() {
@@ -18,6 +18,8 @@ export default function UploadPageWrapper() {
 
 function UploadPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const isDemo = searchParams.has('demo')
   const [url, setUrl] = useState('')
   const [agencyName, setAgencyName] = useState('')
   const [agencyAccentColor, setAgencyAccentColor] = useState('#B8FF00')
@@ -131,7 +133,9 @@ function UploadPage() {
           Audit a site
         </h1>
         <p className="font-[family-name:var(--font-body)] text-[#5A5A56] mt-3">
-          Enter a URL and we&apos;ll analyse 6 SEO categories in under 2 minutes.
+          {isDemo
+            ? 'Enter any URL to see an instant SEO audit. Preview the results free — download the PDF + PPTX for \u00A39.'
+            : 'Enter a URL and we\u2019ll analyse 6 SEO categories in under 2 minutes.'}
         </p>
       </div>
 
