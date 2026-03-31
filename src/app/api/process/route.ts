@@ -4,6 +4,9 @@ import { runAuditPipeline } from '@/lib/engine/audit-pipeline'
 import { setAuditReport } from '@/lib/session-store'
 import { createClient } from '@/lib/supabase/server'
 
+// Allow up to 60s for the Claude API call + site crawl
+export const maxDuration = 60
+
 export async function POST(req: NextRequest) {
   try {
     const { url, agencyName, agencyAccentColor } = await req.json() as {
@@ -49,7 +52,9 @@ export async function POST(req: NextRequest) {
 
           send({ type: 'complete', reportId })
         } catch (error) {
-          send({ type: 'error', error: error instanceof Error ? error.message : 'Audit failed' })
+          const msg = error instanceof Error ? error.message : 'Audit failed'
+          console.error('[audit-pipeline]', error)
+          send({ type: 'error', error: msg })
         } finally {
           controller.close()
         }

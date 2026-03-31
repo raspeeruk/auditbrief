@@ -5,6 +5,12 @@
 [build.environment]
   NODE_VERSION = "22"
 
+[functions]
+  node_bundler = "nft"
+
+[functions."*"]
+  included_files = ["node_modules/@anthropic-ai/**"]
+
 [[redirects]]
   from = "/api/checkout"
   to = "/.netlify/functions/checkout"
