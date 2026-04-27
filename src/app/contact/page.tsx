@@ -17,8 +17,7 @@ export default function ContactPage() {
           <h1 className="font-[family-name:var(--font-heading)] text-xl font-semibold text-[#111110] mb-1">Get in touch</h1>
           <p className="text-sm text-[#5A5A56] mb-6">Have a question or need help? We'll get back to you within 24 hours.</p>
 
-          <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/contact/thanks">
-            <input type="hidden" name="form-name" value="contact" />
+          <form name="contact" method="POST" action="/api/contact">
             <p className="hidden"><label>Don't fill this out: <input name="bot-field" /></label></p>
 
             <label className="block text-xs font-medium text-[#5A5A56] uppercase tracking-wide mb-1.5">Name</label>
