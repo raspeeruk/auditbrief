@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import NewsletterForm from '@/components/newsletter-form'
 
 export default function LandingPage() {
   return (
@@ -415,6 +416,13 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="max-w-[1200px] mx-auto px-6 py-10">
         <div className="h-0.5 bg-[#111110] mb-8" />
+        <div className="mb-10 relative">
+          <p className="label mb-3">Newsletter</p>
+          <p className="font-[family-name:var(--font-body)] text-sm text-[#5A5A56] mb-4 max-w-[440px]">
+            One SEO teardown a month, straight from real audits. No fluff, no spam.
+          </p>
+          <NewsletterForm />
+        </div>
         <div className="flex items-center justify-between flex-wrap gap-4">
           <span className="font-[family-name:var(--font-heading)] text-xl text-[#5A5A56] uppercase tracking-wider">
             AuditBrief
