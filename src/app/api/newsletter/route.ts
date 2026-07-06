@@ -4,6 +4,13 @@ const COLLECTOR_URL = 'https://rogerson-signups.netlify.app/'
 const SITE = 'auditpdf.com'
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
+function clean(value: unknown): string {
+  return String(value ?? '')
+    .replace(/[\r\n\t]/g, ' ')
+    .trim()
+    .slice(0, 200)
+}
+
 export async function POST(req: NextRequest) {
   let body: Record<string, string> = {}
 
@@ -19,6 +26,8 @@ export async function POST(req: NextRequest) {
 
   const email = (body.email || '').trim()
   const website = (body.website || '').trim()
+  const page = clean(body.page)
+  const source = clean(body.source)
 
   // Honeypot filled means a bot: pretend success, forward nothing
   if (website) {
@@ -40,7 +49,8 @@ export async function POST(req: NextRequest) {
         'form-name': 'newsletter',
         email,
         site: SITE,
-        source: 'footer',
+        source: source || 'footer',
+        ...(page ? { page } : {}),
       }).toString(),
       signal: AbortSignal.timeout(8000),
     })
